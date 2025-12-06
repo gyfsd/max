@@ -2,47 +2,60 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Установка Max</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: #000;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #000, #0a00ff, #5e00ff);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
       height: 100vh;
       overflow: hidden;
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
+      position: relative;
     }
-    .dialog {
-      background: #1e1e1e;
+
+    .container {
       width: 90%;
-      max-width: 400px;
+      max-width: 500px;
       padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(255,0,0,0.3);
-      border: 1px solid #444;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      z-index: 10;
     }
-    .app-icon {
-      width: 64px;
-      height: 64px;
-      background: #ff3b30;
-      border-radius: 16px;
+
+    .logo {
+      width: 120px;
+      height: 120px;
       margin: 0 auto 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      font-size: 24px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
     }
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     h2 {
-      font-size: 22px;
-      margin-bottom: 15px;
-      color: #fff;
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-weight: 600;
     }
+
+    .subtitle {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
     .progress-label {
       font-size: 14px;
       color: #aaa;
@@ -52,13 +65,14 @@
       width: 100%;
       height: 8px;
       border-radius: 4px;
-      overflow: hidden;
-      background: #333;
+      background: #222;
+      margin-bottom: 20px;
     }
-    progress::-webkit-progress-bar { background: #333; }
-    progress::-webkit-progress-value { background: #007aff; }
+    progress::-webkit-progress-bar { background: #222; }
+    progress::-webkit-progress-value { background: linear-gradient(to right, #0a00ff, #5e00ff); }
+
     .btn {
-      background: #ff3b30;
+      background: linear-gradient(to right, #ff3b30, #ff6b6b);
       color: white;
       border: none;
       padding: 16px;
@@ -70,9 +84,14 @@
       box-shadow: 0 4px 0 #cc2e26;
       cursor: pointer;
       user-select: none;
+      transition: all 0.2s ease;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 0 #cc2e26;
     }
     .btn:active {
-      transform: translateY(4px);
+      transform: scale(0.98) translateY(4px);
       box-shadow: none;
     }
 
@@ -88,63 +107,108 @@
       justify-content: center;
       align-items: center;
       padding: 20px;
+      overflow: hidden;
     }
-    .prank-screen h1 {
+
+    .fullscreen-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      object-fit: cover;
+      z-index: 99;
+      display: none;
+    }
+
+    .prank-text {
       font-size: 8vw;
       color: #ff0040;
       margin-bottom: 20px;
       text-shadow: 0 0 20px #ff004088;
+      animation: pulse 1s infinite;
     }
-    .prank-screen img {
-      max-width: 90%;
-      max-height: 60vh;
-      border-radius: 12px;
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    /* Блокируем "назад" */
+    .block-back {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0);
+      z-index: 200;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
 
-  <!-- Основной "диалог установки" -->
-  <div class="dialog" id="install-dialog">
-    <div class="app-icon">M</div>
+  <!-- Основной диалог -->
+  <div class="container" id="install-dialog">
+    <div class="logo">
+      <img src="max.png" alt="Max Logo">
+    </div>
     <h2>Установка Max</h2>
+    <div class="subtitle">Максимум возможностей для жизни</div>
     <div class="progress-label">Загрузка: 73%</div>
     <progress value="73" max="100"></progress>
     <button class="btn" id="cancel-btn">❌ Отменить установку</button>
   </div>
 
-  <!-- Экран пранка (изначально скрыт) -->
+  <!-- Экран пранка -->
   <div class="prank-screen" id="prank-screen">
-    <h1>NFC PRANK! 😈</h1>
+    <video class="fullscreen-video" id="prank-video" autoplay muted playsinline loop>
+      <source src="video.mp4" type="video/mp4">
+      Ваш браузер не поддерживает video.
+    </video>
+    <div class="prank-text">NFC PRANK! 😈</div>
     <p style="color:#aaa;font-size:20px;margin-bottom:30px">Ты сам нажал «Отменить»…</p>
-    <img src="https://media.tenor.com/SB9K7ZsHkW4AAAAC/cat-dancing.gif" alt="Танцующий кот">
-    <p style="color:#fff;font-size:16px;margin-top:30px">Теперь твой телефон знает, кто тут босс 🫡</p>
+    <p style="color:#fff;font-size:16px">Теперь твой телефон знает, кто тут босс 🫡</p>
   </div>
 
-  <!-- Звук (загружаем с CDN — без проблем с CORS) -->
-  <!-- Используем громкий, короткий звук: "Oh no!" -->
-  <audio id="prank-audio" src="https://cdn.pixabay.com/download/audio/2022/03/14/audio_35b8a04b9c.mp3?filename=oh-no-49353.mp3"></audio>
+  <!-- Блокиратор "назад" -->
+  <div class="block-back" id="block-back"></div>
 
   <script>
-    const audio = document.getElementById('prank-audio');
     const cancelBtn = document.getElementById('cancel-btn');
     const installDialog = document.getElementById('install-dialog');
     const prankScreen = document.getElementById('prank-screen');
+    const prankVideo = document.getElementById('prank-video');
+    const blockBack = document.getElementById('block-back');
 
+    // Блокируем "назад" в браузере
+    window.history.pushState(null, null, window.location.href);
+    window.addEventListener('popstate', function() {
+      window.history.pushState(null, null, window.location.href);
+    });
+
+    // При нажатии — запускаем пранк
     cancelBtn.onclick = function() {
-      // 1. Пробуем проиграть звук — и разблокировать его, если нужно
-      audio.play().catch(e => {
-        // Если autoplay заблокирован — создаём невидимый клик для разблокировки (на Android часто срабатывает)
-        const fakeClick = new MouseEvent('click', { bubbles: true });
-        document.dispatchEvent(fakeClick);
-        setTimeout(() => audio.play(), 10);
-      });
+      // Убираем диалог
+      installDialog.style.display = 'none';
 
-      // 2. Скрываем диалог, показываем пранк через 200 мс (пока звук начинает играть)
+      // Включаем видео на весь экран
+      prankScreen.style.display = 'flex';
+      prankVideo.style.display = 'block';
+
+      // Разблокируем звук — через touchstart (на Android работает!)
       setTimeout(() => {
-        installDialog.style.display = 'none';
-        prankScreen.style.display = 'flex';
-      }, 200);
+        prankVideo.muted = false;
+        prankVideo.play().catch(e => {
+          console.log("Autoplay blocked, trying to fake interaction...");
+          const fakeClick = new MouseEvent('click', { bubbles: true });
+          document.dispatchEvent(fakeClick);
+          setTimeout(() => prankVideo.play(), 100);
+        });
+      }, 100);
+
+      // Убираем блокировку "назад" через 5 сек (чтобы не мучать жертву)
+      setTimeout(() => {
+        blockBack.style.pointerEvents = 'auto';
+      }, 5000);
     };
   </script>
 
