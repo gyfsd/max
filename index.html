@@ -7,7 +7,8 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: linear-gradient(135deg, #000, #0a00ff, #5e00ff);
+      background: url('gradient.png') no-repeat center center;
+      background-size: cover;
       color: white;
       font-family: 'Segoe UI', sans-serif;
       height: 100vh;
@@ -25,9 +26,9 @@
       padding: 30px;
       background: rgba(0, 0, 0, 0.7);
       border-radius: 20px;
-      box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
       z-index: 10;
+      box-shadow: none; /* Убрали тень */
     }
 
     .logo {
@@ -72,7 +73,7 @@
     progress::-webkit-progress-value { background: linear-gradient(to right, #0a00ff, #5e00ff); }
 
     .btn {
-      background: linear-gradient(to right, #ff3b30, #ff6b6b);
+      background: linear-gradient(to right, #201874, #270b64);
       color: white;
       border: none;
       padding: 16px;
@@ -81,18 +82,16 @@
       border-radius: 12px;
       width: 100%;
       margin-top: 25px;
-      box-shadow: 0 4px 0 #cc2e26;
       cursor: pointer;
       user-select: none;
       transition: all 0.2s ease;
+      box-shadow: none; /* Убрали тень */
     }
     .btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 6px 0 #cc2e26;
     }
     .btn:active {
       transform: scale(0.98) translateY(4px);
-      box-shadow: none;
     }
 
     /* Экран после нажатия */
@@ -149,7 +148,7 @@
   <!-- Основной диалог -->
   <div class="container" id="install-dialog">
     <div class="logo">
-      <img src="max.png" alt="Max Logo">
+      <img src="max.png" alt="Max Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgZmlsbD0iIzAwMCIvPgogIDxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjQwIiBmaWxsPSIjZmZmIi8+Cjwvc3ZnPg==';">
     </div>
     <h2>Установка Max</h2>
     <div class="subtitle">Максимум возможностей для жизни</div>
