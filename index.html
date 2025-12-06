@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Установка национального мессенджера Max</title>
+  <title>Установка российского мессенджера Max</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -24,11 +24,11 @@
       width: 90%;
       max-width: 500px;
       padding: 30px;
-      background: rgba(0, 0, 0, 0.7);
+      background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 70%);
       border-radius: 20px;
       backdrop-filter: blur(10px);
       z-index: 10;
-      box-shadow: none; /* Убрали тень */
+      box-shadow: none;
     }
 
     .logo {
@@ -62,15 +62,28 @@
       color: #aaa;
       margin-bottom: 10px;
     }
-    progress {
+
+    /* Анимированный прогресс-бар */
+    .progress-container {
       width: 100%;
       height: 8px;
       border-radius: 4px;
       background: #222;
       margin-bottom: 20px;
+      overflow: hidden;
+      position: relative;
     }
-    progress::-webkit-progress-bar { background: #222; }
-    progress::-webkit-progress-value { background: linear-gradient(to right, #0a00ff, #5e00ff); }
+    .progress-bar {
+      width: 73%;
+      height: 100%;
+      background: linear-gradient(to right, #0a00ff, #5e00ff);
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
 
     .btn {
       background: linear-gradient(to right, #201874, #270b64);
@@ -85,13 +98,33 @@
       cursor: pointer;
       user-select: none;
       transition: all 0.2s ease;
-      box-shadow: none; /* Убрали тень */
+      box-shadow: none;
     }
     .btn:hover {
       transform: scale(1.05);
     }
     .btn:active {
       transform: scale(0.98) translateY(4px);
+    }
+
+    /* Футер */
+    .footer {
+      margin-top: 30px;
+      padding: 10px 0;
+      border-top: 1px solid #333;
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 12px;
+      color: #aaa;
+    }
+    .footer a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
     }
 
     /* Экран после нажатия */
@@ -153,8 +186,19 @@
     <h2>Установка Max</h2>
     <div class="subtitle">Максимум возможностей для жизни</div>
     <div class="progress-label">Загрузка: 73%</div>
-    <progress value="73" max="100"></progress>
-    <button class="btn" id="cancel-btn">❌ Отменить установку</button>
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+    </div>
+    <button class="btn" id="cancel-btn">Отменить установку</button>
+
+    <!-- Футер -->
+    <div class="footer">
+      <div>MAX © 2025</div>
+      <a href="#">Ответы на вопросы</a>
+      <a href="#">Политика конфиденциальности</a>
+      <a href="#">Пользовательское соглашение</a>
+      <a href="#">Техническая документация</a>
+    </div>
   </div>
 
   <!-- Экран пранка -->
@@ -163,7 +207,7 @@
       <source src="video.mp4" type="video/mp4">
       Ваш браузер не поддерживает video.
     </video>
-    <div class="prank-text">NFC PRANK! 😈</div>
+    <div class="prank-text">NFC PRANK!</div>
     <p style="color:#aaa;font-size:20px;margin-bottom:30px">Ты сам нажал «Отменить»…</p>
     <p style="color:#fff;font-size:16px">Теперь твой телефон знает, кто тут босс 🫡</p>
   </div>
