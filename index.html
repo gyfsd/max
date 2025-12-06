@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Установка Max</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .dialog {
+      background: #1e1e1e;
+      width: 90%;
+      max-width: 400px;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(255,0,0,0.3);
+      border: 1px solid #444;
+    }
+    .app-icon {
+      width: 64px;
+      height: 64px;
+      background: #ff3b30;
+      border-radius: 16px;
+      margin: 0 auto 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 24px;
+    }
+    h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+    .progress-label {
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 10px;
+    }
+    progress {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #333;
+    }
+    progress::-webkit-progress-bar { background: #333; }
+    progress::-webkit-progress-value { background: #007aff; }
+    .btn {
+      background: #ff3b30;
+      color: white;
+      border: none;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 12px;
+      width: 100%;
+      margin-top: 25px;
+      box-shadow: 0 4px 0 #cc2e26;
+      cursor: pointer;
+      user-select: none;
+    }
+    .btn:active {
+      transform: translateY(4px);
+      box-shadow: none;
+    }
+
+    /* Экран после нажатия */
+    .prank-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: black;
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .prank-screen h1 {
+      font-size: 8vw;
+      color: #ff0040;
+      margin-bottom: 20px;
+      text-shadow: 0 0 20px #ff004088;
+    }
+    .prank-screen img {
+      max-width: 90%;
+      max-height: 60vh;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Основной "диалог установки" -->
+  <div class="dialog" id="install-dialog">
+    <div class="app-icon">M</div>
+    <h2>Установка Max</h2>
+    <div class="progress-label">Загрузка: 73%</div>
+    <progress value="73" max="100"></progress>
+    <button class="btn" id="cancel-btn">❌ Отменить установку</button>
+  </div>
+
+  <!-- Экран пранка (изначально скрыт) -->
+  <div class="prank-screen" id="prank-screen">
+    <h1>NFC PRANK! 😈</h1>
+    <p style="color:#aaa;font-size:20px;margin-bottom:30px">Ты сам нажал «Отменить»…</p>
+    <img src="https://media.tenor.com/SB9K7ZsHkW4AAAAC/cat-dancing.gif" alt="Танцующий кот">
+    <p style="color:#fff;font-size:16px;margin-top:30px">Теперь твой телефон знает, кто тут босс 🫡</p>
+  </div>
+
+  <!-- Звук (загружаем с CDN — без проблем с CORS) -->
+  <!-- Используем громкий, короткий звук: "Oh no!" -->
+  <audio id="prank-audio" src="https://cdn.pixabay.com/download/audio/2022/03/14/audio_35b8a04b9c.mp3?filename=oh-no-49353.mp3"></audio>
+
+  <script>
+    const audio = document.getElementById('prank-audio');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const installDialog = document.getElementById('install-dialog');
+    const prankScreen = document.getElementById('prank-screen');
+
+    cancelBtn.onclick = function() {
+      // 1. Пробуем проиграть звук — и разблокировать его, если нужно
+      audio.play().catch(e => {
+        // Если autoplay заблокирован — создаём невидимый клик для разблокировки (на Android часто срабатывает)
+        const fakeClick = new MouseEvent('click', { bubbles: true });
+        document.dispatchEvent(fakeClick);
+        setTimeout(() => audio.play(), 10);
+      });
+
+      // 2. Скрываем диалог, показываем пранк через 200 мс (пока звук начинает играть)
+      setTimeout(() => {
+        installDialog.style.display = 'none';
+        prankScreen.style.display = 'flex';
+      }, 200);
+    };
+  </script>
+
+</body>
+</html>
